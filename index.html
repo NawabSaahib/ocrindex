@@ -96,19 +96,17 @@
 </head>
 <body>
     <h1>Reference Number Detector</h1>
-    <form action="/process" method="post" id="myForm">
-        <label for="folder_path">Enter folder address where all swift 103 exists:</label>
-        <input type="text" id="folder_path" name="folder_path" required>
-        <button type="submit" id="submitButton">Submit</button>
-        <div id="loading">
-
-            <img src="https://i.stack.imgur.com/MnyxU.gif" alt="Loading...">
-            <p>Processing...</p>
-        </div>
-        <div id="processingMessage"></div>
-        <h5 text align="right">by Tehsin Hasnain</h5>
-    </form>
-
+    <form action="/process" method="post" enctype="multipart/form-data" id="myForm">
+    <label for="file">Upload image files:</label>
+    <input type="file" id="file" name="file" accept=".jpg, .jpeg, .png, .gif" multiple required>
+    <button type="submit" id="submitButton">Submit</button>
+    <div id="loading">
+        <img src="https://i.stack.imgur.com/MnyxU.gif" alt="Loading...">
+        <p>Processing...</p>
+    </div>
+    <div id="processingMessage"></div>
+    <h5 text align="right">by Tehsin Hasnain</h5>
+</form>
 
     <script>
         document.getElementById('myForm').addEventListener('submit', function() {

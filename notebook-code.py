@@ -28,7 +28,7 @@ app = Flask(__name__, template_folder=template_folder)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # Set max upload size to 16MB
 
-ngrok.set_auth_token("1v832ggUmuAmPNSXyGygmfeBAQB_2Lr9Pm78EXmvcoZzm5zoo")
+ngrok.set_auth_token("2ds0ymsPkJwByF4hssQzIVRsBUb_7QdXVC8XkL16yV3J6yxyf")
 public_url = ngrok.connect(port_no).public_url
 
 def allowed_file(filename):
@@ -153,7 +153,7 @@ def download():
         response.headers["Content-Disposition"] = f"attachment; filename={os.path.basename(zip_filename)}"
         return response
  # Delete all files in the 'images' folder
-  
+
     except Exception as e:
         return f"Error downloading files: {str(e)}"
 

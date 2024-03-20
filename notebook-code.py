@@ -1,6 +1,6 @@
 # CODE AFTER ADDING DOWNLOADING PART
-#!apt install tesseract-ocr
-#!apt install libtesseract-dev
+!apt install tesseract-ocr
+!apt install libtesseract-dev
 !pip install pytesseract
 !pip install pyngrok
 !pip install flask

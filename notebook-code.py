@@ -10,7 +10,11 @@ from pyngrok import ngrok
 from flask import Flask, render_template, request, redirect, url_for
 from PIL import Image
 import os
+import re
 import pytesseract
+from flask import send_from_directory
+import zipfile
+import shutil
 
 # Set Tesseract command path
 pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
@@ -66,10 +70,6 @@ def process():
 
 # Add a new route to execute the image processing code
 # ... (previous code)
-import re
-import os
-import re
-
 
 def extract_reference_number(image_path, keyword):
     try:
@@ -78,7 +78,7 @@ def extract_reference_number(image_path, keyword):
         extracted_text = os.popen(cmd).read()
 
         # Print the extracted text for debugging
-        print(f"Extracted Text from {image_path}:\n{extracted_text}")
+       # print(f"Extracted Text from {image_path}:\n{extracted_text}")
  # Find the index of the keyword in the extracted text
         keyword_index = extracted_text.find(keyword)
 
@@ -97,20 +97,20 @@ def extract_reference_number(image_path, keyword):
         print(f"Error extracting reference number from {image_path}: {str(e)}")
         return None
 
-from flask import send_from_directory
-from flask import send_file
-import zipfile
-import shutil
+
 
 @app.route('/execute_processing/<keyword>')
 def execute_processing(keyword):
     try:
         files = [f for f in os.listdir(images_folder) if os.path.isfile(os.path.join(images_folder, f))]
-        renamed_files = []
+        #renamed_files = []
 
         for file_name in files:
             # Create the full path to the image file
+
             image_path = os.path.join(images_folder, file_name)
+            renamed_files = []
+
 
             # Extract the reference number from the current image
             reference_number = extract_reference_number(image_path, keyword)
@@ -161,8 +161,3 @@ def download():
 
 print(f"To access the Global link, please click {public_url}")
 app.run(port=port_no)
-
-
-
-
-

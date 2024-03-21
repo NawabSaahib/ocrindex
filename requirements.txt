@@ -2,7 +2,7 @@ tesseract-ocr
 libtesseract-dev
 
 absl-py==1.4.0
-Flask==2.0.2
+Flask==2.2.5
 Pillow==8.4.0
 pyngrok==5.1.0
 pytesseract==0.3.8
@@ -103,7 +103,6 @@ fastrlock==0.8.2
 filelock==3.13.1
 fiona==1.9.6
 firebase-admin==5.3.0
-Flask==2.2.5
 flatbuffers==24.3.7
 flax==0.8.2
 folium==0.14.0

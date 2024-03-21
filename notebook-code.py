@@ -20,8 +20,8 @@ import shutil
 pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
 
 # Specify the project folder and template directory
-images_folder = '/content/ocrindex/images'
-template_folder = '/content/ocrindex'
+images_folder = '/home/shakalaka/ocrindex/images'
+template_folder = '/home/shakalaka/ocrindex'
 port_no = 5000
 
 # Flask Configuration
@@ -33,14 +33,14 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # Set max upload size to 16MB
 
 ngrok.set_auth_token("2ds0ymsPkJwByF4hssQzIVRsBUb_7QdXVC8XkL16yV3J6yxyf")
-public_url = ngrok.connect(port_no).public_url
+#public_url = ngrok.connect(port_no).public_url
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route("/")
 def home():
-    return render_template('index.html')
+    return render_template('/home/shakalaka/ocrindex/index.html')
 
 @app.route('/process', methods=['POST'])
 def process():
@@ -159,5 +159,5 @@ def download():
 
 # ... (rest of the code)
 
-print(f"To access the Global link, please click {public_url}")
+#print(f"To access the Global link, please click {public_url}")
 app.run(port=port_no)

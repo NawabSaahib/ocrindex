@@ -20,8 +20,8 @@ import shutil
 pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
 
 # Specify the project folder and template directory
-images_folder = '/home/shakalaka/ocrindex/images'
-template_folder = '/home/shakalaka/ocrindex'
+images_folder = '/content/ocrindex/images'
+template_folder = '/content/ocrindex'
 port_no = 5000
 
 # Flask Configuration
@@ -33,14 +33,14 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # Set max upload size to 16MB
 
 ngrok.set_auth_token("2ds0ymsPkJwByF4hssQzIVRsBUb_7QdXVC8XkL16yV3J6yxyf")
-#public_url = ngrok.connect(port_no).public_url
+public_url = ngrok.connect(port_no).public_url
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route("/")
 def home():
-    return render_template('/home/shakalaka/ocrindex/index.html')
+    return render_template('index.html')
 
 @app.route('/process', methods=['POST'])
 def process():
@@ -78,7 +78,7 @@ def extract_reference_number(image_path, keyword):
         extracted_text = os.popen(cmd).read()
 
         # Print the extracted text for debugging
-       # print(f"Extracted Text from {image_path}:\n{extracted_text}")
+        print(f"Extracted Text from {image_path}:\n{extracted_text}")
  # Find the index of the keyword in the extracted text
         keyword_index = extracted_text.find(keyword)
 
@@ -103,14 +103,11 @@ def extract_reference_number(image_path, keyword):
 def execute_processing(keyword):
     try:
         files = [f for f in os.listdir(images_folder) if os.path.isfile(os.path.join(images_folder, f))]
-        #renamed_files = []
+        renamed_files = []  # Moved outside the loop
 
         for file_name in files:
             # Create the full path to the image file
-
             image_path = os.path.join(images_folder, file_name)
-            renamed_files = []
-
 
             # Extract the reference number from the current image
             reference_number = extract_reference_number(image_path, keyword)
@@ -141,23 +138,30 @@ def execute_processing(keyword):
         return f"Error executing processing: {str(e)}"
 
 
-
 import shutil
 @app.route('/download')
 def download():
     try:
         zip_filename = f'{images_folder}.zip'
 
+        # Create a zip file with all renamed files
+        renamed_files = [os.path.join(images_folder, f) for f in os.listdir(images_folder) if os.path.isfile(os.path.join(images_folder, f))]
+        with zipfile.ZipFile(zip_filename, 'w') as zip_file:
+            for file in renamed_files:
+                zip_file.write(file, os.path.basename(file))
+
+        # Delete all files in the 'images' folder
+        for file in renamed_files:
+            os.remove(file)
+
         # Create a response object and set headers to force browser download
         response = make_response(send_file(zip_filename, as_attachment=True))
         response.headers["Content-Disposition"] = f"attachment; filename={os.path.basename(zip_filename)}"
         return response
- # Delete all files in the 'images' folder
 
     except Exception as e:
         return f"Error downloading files: {str(e)}"
 
-# ... (rest of the code)
 
-#print(f"To access the Global link, please click {public_url}")
+print(f"To access the Global link, please click {public_url}")
 app.run(port=port_no)

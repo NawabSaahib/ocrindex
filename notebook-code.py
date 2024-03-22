@@ -1,8 +1,4 @@
 # CODE AFTER ADDING DOWNLOADING PART
-!pip install pytesseract
-!pip install pyngrok
-!pip install flask
-!git clone https://github.com/NawabSaahib/ocrindex.git
 from flask import send_file, make_response
 from pyngrok import ngrok
 from flask import Flask, render_template, request, redirect, url_for
